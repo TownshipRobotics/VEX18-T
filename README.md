@@ -67,7 +67,7 @@ void turnRight() {
 
 //***** FLIPPER *****
 void flipCap(){
-  motor[fliiperLeft] = -60;//turns the cap over... hopefully
+  	motor[fliiperLeft] = -60;//turns the cap over... hopefully
 	motor[flipperRight] = -60;
 	sleep(2750);
 	stopWheels();
@@ -158,8 +158,7 @@ task autonomous() {
 task usercontrol() {
 	while (true) {
 		updateWheels();
-		updateClaw();
-		updateArm();
+		updateFlipper();
 		updateMobileGoal();
 	}
 }
