@@ -9,7 +9,7 @@
 //************************
 //         CONFIG
 //************************
-#pragma platform(VEX2);
+//#pragma platform(VEX2);
 //#pragma competitionControl(Competition)
 //#include "Vex_Competition_Includes.c"
 
@@ -17,7 +17,7 @@
 //************************
 //       VARIABLES
 //************************
-bool bStopTasksBetweenModes = true;
+//bool bStopTasksBetweenModes = true;
 //*************************
 //         METHODS
 //*************************
@@ -63,7 +63,7 @@ void flipCap(){
 	sleep(2750);
 	stopWheels();
 }
-   
+
 //****** ARM *******
 void moveArm(){
   	motor[armLeft] = -60;//should lift the arm
@@ -79,9 +79,15 @@ void auto(){
 	//flip cap
 	//moveArm()
 	//flipCap();
-	moveWheels(40);
-	sleep(100);
+	moveWheels(40);//parameter = speed
+	sleep(100);//time spent driving in seconds
 	stopWheels();
+	turnRight();
+	//turnLeft();
+	moveWheels(40);//parameter = speed
+	sleep(100);
+	//turnLeft();
+	stopWheels();//braking mechanism
 	//moveArm();// need a new method to move down
 }
 
@@ -95,7 +101,7 @@ void auto2(){
 }
 
 //***** DRIVING *****
-/* Controls:		
+/* Controls:
 		left joystick = treads
 		6D = arm down
 		6U = arm up
@@ -116,20 +122,21 @@ int modify2(int input) {
 }
 
 /* Update wheel powers based on controller */
-void updateWheels() { 
-	motor[leftWheel] = -(vexRT[Ch3])/6;
-	motor[rightWheel] = (vexRT[Ch3])/6;
+void updateWheels() {
+	motor[leftWheel] = -(vexRT[Ch3])/3;
+	motor[rightWheel] = (vexRT[Ch2])/3;
+
 }
 
 /* Update claw power based on controller */
 void updateFlipper() {
 	if(vexRT[Btn5U] == 1){ // If upper Z button down
-		motor[flipperLeft] = 30;
-		motor[flipperRight] = -30;
+		motor[flipperLeft] = 60;
+		motor[flipperRight] = -60;
 		}
 	else if(vexRT[Btn5D] == 1){ // If lower Z button down
-		motor[flipperLeft] = -30;
-		motor[flipperRight] = 30;
+		motor[flipperLeft] = -60;
+		motor[flipperRight] = 60;
 		}
 	else{
 		motor[flipperLeft] = 0;
@@ -139,43 +146,15 @@ void updateFlipper() {
 
 void updateArm() {
 	if(vexRT[Btn6U] == 1){ // If upper Z button down
-		motor[armLeft] = 30;
-		motor[armRight] = -30;
+		motor[armLeft] = -60;//should move up 
+		motor[armRight] = 60;
 	}
 	else if(vexRT[Btn6D] == 1){ // If lower Z button down
-		motor[armLeft] = -30;
-		motor[armRight] = 30;
+		motor[armLeft] = 30;//should slow speed moving down
+		motor[armRight] = -30;
 	}
 	else{
 		motor[armLeft] = 0;
 		motor[armRight] = 0;
 	}
 }
-
-
-
-
-
-//*************************
-//          TASKS
-//*************************
-
-void pre_auton() {
-	bStopTasksBetweenModes = true;
-}
-
-task autonomous() {
-	//auto();
-}
-
-task usercontrol() {
-		//updateWheels();
-	//	updateFlipper();
-	//	updateArm();
-	}
-	
-	task main()
-	{
-		while(true){
-		updateFlipper();
-	}}
